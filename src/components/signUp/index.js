@@ -4,12 +4,23 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../firebase';
 import * as ROUTES from '../constants/routes';
+import * as ROLES from '../constants/roles';
+
+
+// const INITIAL_STATE = {
+//   username: '',
+//   email: '',
+//   passwordOne: '',
+//   passwordTwo: '',
+//   error: null,
+// };
 
 const INITIAL_STATE = {
   username: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  isPaid: '',
   error: null,
 };
 
@@ -30,7 +41,12 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { username, email, passwordOne, isPaid } = this.state;
+    const roles = {};
+
+    if(isPaid){
+      roles[ROLES.ISPAID] = ROLES.ISPAID;
+    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -40,7 +56,8 @@ class SignUpFormBase extends Component {
           .user(authUser.user.uid)
           .set({
             username,
-            email
+            email,
+            roles
           });
       })
       .then(authUser => {
@@ -57,12 +74,17 @@ class SignUpFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  onChangeCheckbox = event => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
   render() {
     const {
       username,
       email,
       passwordOne,
       passwordTwo,
+      isPaid,
       error,
     } = this.state;
 
@@ -102,6 +124,15 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
+        <label>
+          Admin:
+          <input
+            name="isPaid"
+            type="checkbox"
+            checked={isPaid}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>

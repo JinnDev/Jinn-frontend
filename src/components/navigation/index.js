@@ -1,55 +1,72 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SignOutButton from '../signOut';
+import {Layout, Menu, Radio, Col, Row, Select, Button} from 'antd';
+import 'antd/dist/antd.css';
+
 import * as ROUTES from '../constants/routes';
 import * as ROLES from '../constants/roles';
 
 import { AuthUserContext } from '../session';
 
+const {Header} = Layout;
+
 const Navigation = () => (
-  <AuthUserContext.Consumer>
-    {authUser =>
-      authUser ? (
-        <NavigationAuth authUser={authUser} />
-      ) : (
-        <NavigationNonAuth />
-      )
-    }
-  </AuthUserContext.Consumer>
+  <Header>
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser ? (
+          <NavigationAuth authUser={authUser} />
+        ) : (
+          <NavigationNonAuth />
+        )
+      }
+    </AuthUserContext.Consumer>
+  </Header>
 );
 
 
 const NavigationAuth = ({ authUser }) => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.HOME}>Home</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
+  <Menu theme="dark" mode="horizontal" style={{lineHeight: '61px'}}>
+    <Menu.Item key="1">
+      <Link to={ROUTES.LANDING}>
+        <img alt="logo" src="logo192.png" height="37px"/>
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="2">
+      <Link to={ROUTES.LANDING}><b>Landing</b></Link>
+    </Menu.Item>
+    <Menu.Item key="3">
+      <Link to={ROUTES.HOME}><b>Home</b></Link>
+    </Menu.Item>
+    <Menu.Item key="4">
+      <Link to={ROUTES.ACCOUNT}><b>Account</b></Link>
+    </Menu.Item>
     {!!authUser.roles[ROLES.ISPAID] && (
-      <li>
-        <Link to={ROUTES.PAID}>Paid</Link>
-      </li>
+      <Menu.Item key="5" >
+        <b>Paid Page</b>
+      </Menu.Item>
     )}
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+    <Menu.Item key="4" style={{float: 'right'}}>
+        <SignOutButton/>
+    </Menu.Item>
+  </Menu>
 );
 
 const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
-  </ul>
+  <Menu theme="dark" mode="horizontal" style={{lineHeight: '61px'}}>
+    <Menu.Item key="1">
+      <Link to={ROUTES.LANDING}>
+        <img alt="logo" src="logo192.png" height="37px"/>
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="2">
+      <Link to={ROUTES.LANDING}><b>Landing</b></Link>
+    </Menu.Item>
+    <Menu.Item key="3">
+      <Link to={ROUTES.SIGN_IN}><b>Sign In</b></Link>
+    </Menu.Item>
+  </Menu>
 );
 
 export default Navigation;

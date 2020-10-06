@@ -6,15 +6,6 @@ import { withFirebase } from '../firebase';
 import * as ROUTES from '../constants/routes';
 import * as ROLES from '../constants/roles';
 
-
-// const INITIAL_STATE = {
-//   username: '',
-//   email: '',
-//   passwordOne: '',
-//   passwordTwo: '',
-//   error: null,
-// };
-
 const INITIAL_STATE = {
   username: '',
   email: '',

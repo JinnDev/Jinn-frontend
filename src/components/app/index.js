@@ -12,6 +12,7 @@ import PasswordForgetPage from '../passwordForget';
 import HomePage from '../home';
 import AccountPage from '../account';
 import PaidPage from '../paidPage';
+import SubscriptionSuccess from '../getPremium/subscriptionSuccess.js';
 
 import { withAuthentication } from '../session';
 
@@ -34,9 +35,10 @@ const App = () => (
             <Route path={ROUTES.HOME} component={HomePage} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.PAID} component={PaidPage} />
-            </Content>
-          </Layout>
-        </Content>
+            <Route path={ROUTES.SUBSCRIPTION_SUCCESS} component={SubscriptionSuccess} />
+          </Content>
+        </Layout>
+      </Content>
       {footer}
     </Layout>
   </Router>

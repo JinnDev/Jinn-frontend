@@ -9,6 +9,9 @@ import * as ROLES from '../constants/roles';
 
 import { AuthUserContext } from '../session';
 
+import GetPremium from '../getPremium';
+
+
 const {Header} = Layout;
 
 const Navigation = () => (
@@ -42,8 +45,13 @@ const NavigationAuth = ({ authUser }) => (
     <Menu.Item key="4">
       <Link to={ROUTES.ACCOUNT}><b>Account</b></Link>
     </Menu.Item>
+    {/* Will have to change the rules here for the get premium,
+        just testing that it works at the moment */}
+    <Menu.Item key="5">
+      <GetPremium />
+    </Menu.Item>
     {!!authUser.roles[ROLES.ISPAID] && (
-      <Menu.Item key="5" >
+      <Menu.Item key="6" >
         <b>Paid Page</b>
       </Menu.Item>
     )}

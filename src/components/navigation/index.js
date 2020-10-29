@@ -48,7 +48,7 @@ const NavigationAuth = ({ authUser }) => (
     {/* Will have to change the rules here for the get premium,
         just testing that it works at the moment */}
     <Menu.Item key="5">
-      <GetPremium />
+      <GetPremium user={authUser}/>
     </Menu.Item>
     {!!authUser.roles[ROLES.ISPAID] && (
       <Menu.Item key="6" >

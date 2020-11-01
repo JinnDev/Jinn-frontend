@@ -19,7 +19,12 @@ class GetPremium extends React.Component {
     // Call your backend to create the Checkout Session
     const request = {
       method: 'POST',
-      body: JSON.stringify({client_reference_id : this.props.user.uid})
+      body: JSON.stringify(
+        {
+          client_reference_id : this.props.user.uid,
+          email: this.props.user.email
+        }
+      )
     }
 
     const response = await fetch('http://127.0.0.1:8080/create-checkout-session', request);

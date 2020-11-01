@@ -48,13 +48,13 @@ class SignInFormBase extends Component {
       .then((user) => {
 
         // 1. Fetch information from the backend
-        const request = {
+        const params = {
           client_reference_id : user.user.uid
         }
-        axios.get('http://127.0.0.1:8080/get-payment-status', request)
+        axios.get('http://127.0.0.1:8080/get-payment-status', { params: { client_reference_id: user.user.uid }})
           .then(function (response) {
             // handle success
-            console.log(response);
+            console.log(response.data);
           })
           .catch(function (error) {
             // handle error

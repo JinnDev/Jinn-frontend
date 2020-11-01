@@ -47,9 +47,11 @@ const NavigationAuth = ({ authUser }) => (
     </Menu.Item>
     {/* Will have to change the rules here for the get premium,
         just testing that it works at the moment */}
-    <Menu.Item key="5">
-      <GetPremium user={authUser}/>
-    </Menu.Item>
+    {!authUser.roles[ROLES.ISPAID] && (
+      <Menu.Item key="5">
+        <GetPremium user={authUser}/>
+      </Menu.Item>
+    )}
     {!!authUser.roles[ROLES.ISPAID] && (
       <Menu.Item key="6" >
         <b>Paid Page</b>

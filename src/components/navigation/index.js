@@ -54,7 +54,7 @@ const NavigationAuth = ({ authUser }) => (
     )}
     {!!authUser.roles[ROLES.ISPAID] && (
       <Menu.Item key="6" >
-        <b>Paid Page</b>
+        <Link to={ROUTES.PAID}><b>Paid Page</b></Link>
       </Menu.Item>
     )}
     <Menu.Item key="4" style={{float: 'right'}}>

@@ -66,7 +66,7 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
-  updateUserPaymentStatus = (uid, paymentStatus) => this.db.ref('users/' + uid).set({
+  updateUserPaymentStatus = (uid, paymentStatus) => this.db.ref('users/' + uid).update({
     roles: {ISPAID : paymentStatus}
   });
 

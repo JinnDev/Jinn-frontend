@@ -5,7 +5,7 @@ import { SignUpLink } from '../signUp';
 import { PasswordForgetLink } from '../passwordForget';
 import { withFirebase } from '../firebase';
 import { Layout, Row, Form, Input, Icon, Button, Col } from 'antd';
-import axios from 'axios';
+
 import * as ROUTES from '../constants/routes';
 import './index.css';
 
@@ -46,25 +46,6 @@ class SignInFormBase extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((user) => {
-
-        // 1. Fetch information from the backend
-        const params = {
-          client_reference_id : user.user.uid
-        }
-        axios.get('http://127.0.0.1:8080/get-payment-status', { params: { client_reference_id: user.user.uid }})
-          .then(function (response) {
-            // handle success
-            console.log(response.data);
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
-
-        // Update the firebase real time database
-        //this.props.firebase.updateUserPaymentStatus(user.user.uid, "TEST")
-
-        // 3. Reset the page
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
@@ -77,13 +58,6 @@ class SignInFormBase extends Component {
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-
-  // updateUserPaymentStatus = (uid, paymentStatus) => {
-  //     console.log(uid)
-  //     console.log(paymentStatus)
-  // }
-
-
 
   render() {
     const { email, password, error } = this.state;

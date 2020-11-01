@@ -8,7 +8,6 @@ const stripePromise = loadStripe("pk_test_51HeN8eH4w9X1EWMYxnaSgG8okdMBncFEWpvX1
 class GetPremium extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
   }
 
   handleClick = async (event) => {

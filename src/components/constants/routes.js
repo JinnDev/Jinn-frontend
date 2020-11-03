@@ -6,3 +6,4 @@ export const ACCOUNT = '/account';
 export const PAID = '/paid';
 export const PASSWORD_FORGET = '/pw-forget';
 export const SUBSCRIPTION_SUCCESS = '/success';
+export const PASSWORD_CHANGE = '/pw-change';

@@ -13,7 +13,7 @@ import HomePage from '../home';
 import AccountPage from '../account';
 import PaidPage from '../paidPage';
 import SubscriptionSuccess from '../getPremium/subscriptionSuccess.js';
-
+import PasswordChangeForm from '../passwordChange';
 import { withAuthentication } from '../session';
 
 import * as ROUTES from '../constants/routes';
@@ -36,6 +36,7 @@ const App = () => (
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.PAID} component={PaidPage} />
             <Route path={ROUTES.SUBSCRIPTION_SUCCESS} component={SubscriptionSuccess} />
+            <Route path={ROUTES.PASSWORD_CHANGE} component={PasswordChangeForm } />
           </Content>
         </Layout>
       </Content>

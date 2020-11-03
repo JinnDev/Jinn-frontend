@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import { Layout, Row, Form, Input, Icon, Button, Col } from 'antd';
+import {
+  MailOutlined,
+  LockOutlined,
+  UserOutlined
+} from '@ant-design/icons';
+import './index.css';
 
 import { withFirebase } from '../firebase';
 import * as ROUTES from '../constants/routes';
@@ -16,10 +23,15 @@ const INITIAL_STATE = {
 };
 
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
+  <div style={{ background: '#fff', padding: 28, minHeight: '70vh'}}>
+    <Row justify="center" type="flex">
+      <h2>Sign Up</h2>
+    </Row>
+    <br/>
+    <Row justify="center" type="flex">
       <SignUpForm />
-    </div>
+    </Row>
+  </div>
 );
 
 class SignUpFormBase extends Component {
@@ -85,50 +97,61 @@ class SignUpFormBase extends Component {
       email === '' ||
       username === '';
 
+      console.log(isInvalid)
+
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <Form onSubmit={this.onSubmit} className="sign-up-form">
+        <Input
+          prefix={<UserOutlined />}
           name="username"
           value={username}
           onChange={this.onChange}
           type="text"
-          placeholder="Full Name"
+          placeholder="Username"
+          allowClear={true}
         />
-        <input
+        <br/>
+        <br/>
+        <Input
+          prefix={<MailOutlined />}
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="E-mail"
+          allowClear={true}
         />
-        <input
+        <br/>
+        <br/>
+        <Input
+          prefix={<LockOutlined />}
           name="passwordOne"
           value={passwordOne}
           onChange={this.onChange}
           type="password"
-          placeholder="Password"
+          placeholder="Enter Password"
+          allowClear={true}
         />
-        <input
+        <br/>
+        <br/>
+        <Input
+          prefix={<LockOutlined />}
           name="passwordTwo"
           value={passwordTwo}
           onChange={this.onChange}
           type="password"
           placeholder="Confirm Password"
+          allowClear={true}
         />
-        <label>
-          Admin:
-          <input
-            name="isPaid"
-            type="checkbox"
-            checked={isPaid}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-        <button disabled={isInvalid} type="submit">
+        <br/>
+        <br/>
+        <Button disabled={isInvalid} onClick={this.onSubmit} type="primary" htmlType="submit" className="sign-up-form-button">
           Sign Up
-        </button>
+        </Button>
+        <br/>
+        <br/>
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 }

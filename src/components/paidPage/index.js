@@ -44,16 +44,6 @@ class Wrapped extends React.Component {
 const condition = authUser =>
   authUser && !!authUser.roles[ROLES.ISPAID];
 
-// export default compose(
-//   withAuthorization(condition),
-//   withFirebase,
-// )(PaidPage);
-
-// const SuccessPage = withFirebase(Wrapped);
-//
-// export default SubscriptionSuccess;
-
-
 const PaidPageContent = withFirebase(Wrapped);
 
 const PaidPage = compose(

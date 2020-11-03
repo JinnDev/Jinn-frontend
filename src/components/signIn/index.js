@@ -91,7 +91,7 @@ class SignInFormBase extends Component {
          <u><PasswordForgetLink /></u>
 
         </a>
-        <Button disable={isInvalid} onClick={this.onSubmit} type="primary" htmlType="submit" className="login-form-button">
+        <Button disabled={isInvalid} onClick={this.onSubmit} type="primary" htmlType="submit" className="login-form-button">
           Sign in
         </Button>
         <br/>

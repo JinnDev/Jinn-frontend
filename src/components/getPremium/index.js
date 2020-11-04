@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { loadStripe } from '@stripe/stripe-js';
 import { compose } from 'recompose';
 
+// Need to put this key into env --> impossibly bad
 const stripePromise = loadStripe("pk_test_51HeN8eH4w9X1EWMYxnaSgG8okdMBncFEWpvX1XCceLGv1CyyiSEXZdzMx57xUqNAfJqBeeR0jLBInF4RsOqu5KDv00eiNcQ9hQ");
 
 class GetPremium extends React.Component {

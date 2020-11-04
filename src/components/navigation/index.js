@@ -28,7 +28,6 @@ const Navigation = () => (
   </Header>
 );
 
-
 const NavigationAuth = ({ authUser }) => (
   <Menu theme="dark" mode="horizontal" style={{lineHeight: '61px'}}>
     <Menu.Item key="1">
@@ -47,12 +46,12 @@ const NavigationAuth = ({ authUser }) => (
     </Menu.Item>
     {/* Will have to change the rules here for the get premium,
         just testing that it works at the moment */}
-    {!authUser.roles[ROLES.ISPAID] == "ISPAID" && (
+    {authUser.roles[ROLES.ISPAID] != "paid" && (
       <Menu.Item key="5">
         <GetPremium user={authUser}/>
       </Menu.Item>
     )}
-    {!!authUser.roles[ROLES.ISPAID] == "ISPAID" && (
+    {authUser.roles[ROLES.ISPAID] == "paid" && (
       <Menu.Item key="6" >
         <Link to={ROUTES.PAID}><b>Paid Page</b></Link>
       </Menu.Item>

@@ -43,7 +43,7 @@ class Wrapped extends React.Component {
 }
 
 const condition = authUser =>
-  authUser && !!authUser.roles[ROLES.ISPAID] == "ISPAID";
+  authUser && authUser.roles[ROLES.ISPAID] == "paid";
 
 const PaidPageContent = withFirebase(Wrapped);
 

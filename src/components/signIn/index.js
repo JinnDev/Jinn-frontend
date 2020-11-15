@@ -4,14 +4,27 @@ import { compose } from 'recompose';
 import { SignUpLink } from '../signUp';
 import { PasswordForgetLink } from '../passwordForget';
 import { withFirebase } from '../firebase';
-import * as ROUTES from '../constants/routes';
+import { Layout, Row, Form, Input, Icon, Button, Col } from 'antd';
 
-const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
+import * as ROUTES from '../constants/routes';
+import './index.css';
+
+import {
+  MailOutlined,
+  LockOutlined
+} from '@ant-design/icons';
+
+const { Content } = Layout;
+
+const SignInPage = () =>(
+  <div style={{ background: '#fff', padding: 28, minHeight: '70vh'}}>
+    <Row justify="center" type="flex">
+      <h2>Sign in</h2>
+    </Row>
+    <br/>
+    <Row justify="center" type="flex">
+      <SignInForm />
+    </Row>
   </div>
 );
 
@@ -29,9 +42,10 @@ class SignInFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
+
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((user) => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
@@ -48,27 +62,43 @@ class SignInFormBase extends Component {
   render() {
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
+
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <Form onSubmit={this.onSubmit} className="login-form">
+        <Input
+          prefix={<MailOutlined />}
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="Enter E-mail"
+          allowClear={true}
         />
-        <input
+        <br/>
+        <br/>
+        <Input
+          prefix={<LockOutlined />}
           name="password"
           value={password}
           onChange={this.onChange}
           type="password"
-          placeholder="Password"
+          placeholder="Enter password"
+          allowClear={true}
         />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+        <br/>
+        <br/>
+        <a className="login-form-forgot" href="">
+         <u><PasswordForgetLink /></u>
+
+        </a>
+        <Button disabled={isInvalid} onClick={this.onSubmit} type="primary" htmlType="submit" className="login-form-button">
+          Sign in
+        </Button>
+        <br/>
+        <br/>
+        <u><SignUpLink /></u>
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 }

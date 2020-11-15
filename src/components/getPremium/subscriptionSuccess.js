@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
-import { compose } from 'recompose';
-import { withFirebase } from '../firebase';
-import { withAuthorization } from '../session';
+import React from 'react';
 import { AuthUserContext } from '../session';
 import axios from 'axios';
+import { withFirebase } from '../firebase';
 
-import * as ROLES from '../constants/roles';
-
-const Wrapper = () => (
+const SubscriptionSuccess = () => (
   <AuthUserContext.Consumer>
     {authUser =>
-      <PaidPageContent user={authUser} />
+      <SuccessPage user={authUser} />
     }
   </AuthUserContext.Consumer>
 );
@@ -35,20 +31,19 @@ class Wrapped extends React.Component {
   }
 
   render(){
-
     return (
-      <div>Paid page</div>
+      <div>
+        <h1>Thanks for your order!</h1>
+        <p>
+          We appreciate your business!
+          If you have any questions, please email
+          <a href="mailto:orders@example.com"> orders@example.com</a>.
+        </p>
+      </div>
     )
   }
 }
 
-const condition = authUser =>
-  authUser && authUser.roles[ROLES.ISPAID] == "paid";
+const SuccessPage = withFirebase(Wrapped);
 
-const PaidPageContent = withFirebase(Wrapped);
-
-const PaidPage = compose(
-  withAuthorization(condition)
-)(Wrapper);
-
-export default PaidPage
+export default SubscriptionSuccess;

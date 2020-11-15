@@ -42,7 +42,7 @@ class Firebase {
         .once('value')
         .then(snapshot => {
           const dbUser = snapshot.val();
-          
+
           // default empty roles
           if (!dbUser.roles) {
             dbUser.roles = {};
@@ -65,6 +65,11 @@ class Firebase {
   user = uid => this.db.ref(`users/${uid}`);
 
   users = () => this.db.ref('users');
+
+  updateUserPaymentStatus = (uid, paymentStatus) => this.db.ref('users/' + uid).update({
+    roles: {ISPAID : paymentStatus}
+  });
+
 }
 
 export default Firebase;

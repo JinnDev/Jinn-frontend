@@ -15,6 +15,7 @@ import {
   Slider
 } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import './index.css';
 
@@ -81,7 +82,7 @@ const data = [
     type: 'EQUITY',
     volatility: 15,
     return: 30,
-    weight: 0.25
+    weight: 25
   },
   {
     key: '2',
@@ -90,7 +91,7 @@ const data = [
     type: 'FIXED INCOME',
     volatility: 5,
     return: 7,
-    weight: 0.4
+    weight: 40
   },
   {
     key: '3',
@@ -99,48 +100,74 @@ const data = [
     type: 'COMMODITY',
     volatility: 20,
     return: 35,
-    weight: 0.35
+    weight: 35
   }
 ];
 
 const gutters = {
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 4,
-  5: 5,
+  0: 1,
+  1: 2,
+  2: 3,
+  3: 4,
+  4: 5
 }
 
 class HomePage extends React.Component {
   constructor(props){
     super(props);
-    this.state = {gutterKey: 3}
+    this.state = {
+      riskProfile: 2,
+      portfolio: []
+    }
+  }
+
+  componentDidMount(){
+    this.getPortfolio();
   }
 
   onGutterChange = gutterKey => {
-    this.setState({gutterKey: gutterKey});
+    this.setState({riskProfile: gutterKey});
+    this.getPortfolio();
+  }
+
+  getPortfolio = () => {
+    const { riskProfile } = this.state;
+
+    const request = {
+      params: {riskProfile: riskProfile}
+    };
+
+    axios.get('http://127.0.0.1:8080/get-portfolio', request)
+      .then(response => {
+        this.setState({portfolio: response.data})
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }
 
   render(){
-    const { gutterKey } = this.state;
+    const { riskProfile, portfolio } = this.state;
 
     return(
       <Row justify="center" type="flex" gutter={16}>
+
         {/* Portfolio */}
         <Col span={12}>
           <Card size="small" title="Portfolio" headStyle={{backgroundColor: '#f5f5f5'}}>
-            <Table size="small" columns={columns} dataSource={data} pagination={false} />
+            <Table size="small" columns={columns} dataSource={portfolio} pagination={false} />
           </Card>
         </Col>
+
         {/* Restrictions */}
         <Col span={12}>
-          <Card size="small" title="Risk Profile" headStyle={{backgroundColor: '#f5f5f5'}}>
+          <Card size="small" title="Risk" headStyle={{backgroundColor: '#f5f5f5'}}>
             <div className="icon-wrapper">
               <MinusOutlined />
               <Slider
                 min={0}
-                max={5}
-                value={gutterKey}
+                max={4}
+                value={riskProfile}
                 onChange={this.onGutterChange}
                 marks={gutters}
                 step={null}
@@ -150,10 +177,21 @@ class HomePage extends React.Component {
             </div>
           </Card>
         </Col>
+
       </Row>
     )
   }
 }
+
+function removeIndicesFromHTTPResponse(response){
+  var arr = [];
+  Object.keys(response).forEach(function(item) {
+    arr.push(response[item]);
+  });
+  //console.log(arr)
+  return arr;
+}
+
 
 const condition = authUser => !!authUser;
 export default withAuthorization(condition)(HomePage);

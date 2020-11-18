@@ -74,36 +74,6 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    ticker: 'EQ',
-    name: "Equity Index",
-    type: 'EQUITY',
-    volatility: 15,
-    return: 30,
-    weight: 25
-  },
-  {
-    key: '2',
-    ticker: 'FI',
-    name: "Bond Index",
-    type: 'FIXED INCOME',
-    volatility: 5,
-    return: 7,
-    weight: 40
-  },
-  {
-    key: '3',
-    ticker: 'OI',
-    name: "Oil",
-    type: 'COMMODITY',
-    volatility: 20,
-    return: 35,
-    weight: 35
-  }
-];
-
 const gutters = {
   0: 1,
   1: 2,
@@ -116,25 +86,24 @@ class HomePage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      riskProfile: 2,
+      gutterKey: 2,
       portfolio: []
     }
   }
 
   componentDidMount(){
-    this.getPortfolio();
+    this.getPortfolio(2);
   }
 
   onGutterChange = gutterKey => {
-    this.setState({riskProfile: gutterKey});
-    this.getPortfolio();
+    this.setState({gutterKey: gutterKey});
+    this.getPortfolio(gutterKey);
   }
 
-  getPortfolio = () => {
-    const { riskProfile } = this.state;
+  getPortfolio = (riskLevel) => {
 
     const request = {
-      params: {riskProfile: riskProfile}
+      params: {riskLevel: riskLevel}
     };
 
     axios.get('http://127.0.0.1:8080/get-portfolio', request)
@@ -147,7 +116,7 @@ class HomePage extends React.Component {
   }
 
   render(){
-    const { riskProfile, portfolio } = this.state;
+    const { gutterKey, portfolio } = this.state;
 
     return(
       <Row justify="center" type="flex" gutter={16}>
@@ -167,7 +136,7 @@ class HomePage extends React.Component {
               <Slider
                 min={0}
                 max={4}
-                value={riskProfile}
+                value={gutterKey}
                 onChange={this.onGutterChange}
                 marks={gutters}
                 step={null}

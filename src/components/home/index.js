@@ -39,7 +39,8 @@ const columns = [
   {
     title: 'Avg. Volatility',
     key: 'volatility',
-    dataIndex: 'volatility',
+    dataIndex: 'historical_vol',
+    render: text => <p>{text} %</p>,
     // render: tags => (
     //   <>
     //     {tags.map(tag => {
@@ -57,14 +58,10 @@ const columns = [
     // ),
   },
   {
-    title: 'Avg. Return',
-    dataIndex: 'return',
-    key: 'return',
-  },
-  {
     title: 'Weight',
     key: 'weight',
-    dataIndex: 'weight'
+    dataIndex: 'weight',
+    render: text => <b>{text} %</b>,
     // render: (text, record) => (
     //   <Space size="middle">
     //     <a>Invite {record.name}</a>

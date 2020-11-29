@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import BackTest from '../backtest'
 
 import './index.css';
 
@@ -114,19 +115,19 @@ class HomePage extends React.Component {
 
   render(){
     const { gutterKey, portfolio } = this.state;
-
+  
     return(
       <Row justify="center" type="flex" gutter={16}>
-
+        {/* Left */}
         {/* Portfolio */}
         <Col span={12}>
           <Card size="small" title="Portfolio" headStyle={{backgroundColor: '#f5f5f5'}}>
             <Table size="small" columns={columns} dataSource={portfolio} pagination={false} />
           </Card>
         </Col>
-
-        {/* Restrictions */}
+        {/* Right Side */}
         <Col span={12}>
+          {/* Restrictions */}
           <Card size="small" title="Risk" headStyle={{backgroundColor: '#f5f5f5'}}>
             <div className="icon-wrapper">
               <MinusOutlined />
@@ -142,8 +143,12 @@ class HomePage extends React.Component {
               <PlusOutlined />
             </div>
           </Card>
+          <br />
+          {/* Backtest */}
+          <Card size="small" title="Backtest" headStyle={{backgroundColor: '#f5f5f5'}}>
+            <BackTest portfolio={portfolio} />
+          </Card>
         </Col>
-
       </Row>
     )
   }

@@ -9,39 +9,22 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Re
 class BackTest extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      data: null
-    }
-  }
-
-  componentDidMount(){
-    // const request = {
-    //
-    // };
-    //
-    axios.get('http://127.0.0.1:8080/get-backtest')
-      .then(response => {
-        this.setState({data: response.data})
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
   }
 
   render(){
-    const { data } = this.state;
+    const { backtest } = this.props;
 
     return (
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={data}
+          data={backtest}
           margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
         >
           <XAxis dataKey="date" domain={['dataMin', 'dataMax']} />
           <YAxis/>
           <Tooltip itemSorter={item => -item.value} formatter={(value) => new Intl.NumberFormat('en').format(value)}/>
           <Legend />
-          <Line type="monotone" dataKey="value" stroke="#000000" strokeWidth={2}/>
+          <Line type="monotone" dataKey="value" stroke="#000000" strokeWidth={2} dot={false}/>
         </LineChart>
       </ResponsiveContainer>
     )

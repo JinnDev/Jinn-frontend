@@ -85,7 +85,8 @@ class HomePage extends React.Component {
     super(props);
     this.state = {
       gutterKey: 2,
-      portfolio: []
+      portfolio: [],
+      backtest: []
     }
   }
 
@@ -106,7 +107,10 @@ class HomePage extends React.Component {
 
     axios.get('http://127.0.0.1:8080/get-portfolio', request)
       .then(response => {
-        this.setState({portfolio: response.data})
+        this.setState({
+          portfolio: response.data.portfolio,
+          backtest: response.data.backtest
+        })
       })
       .catch(function (error) {
         console.log(error);
@@ -114,8 +118,8 @@ class HomePage extends React.Component {
   }
 
   render(){
-    const { gutterKey, portfolio } = this.state;
-  
+    const { gutterKey, portfolio, backtest } = this.state;
+
     return(
       <Row justify="center" type="flex" gutter={16}>
         {/* Left */}
@@ -146,7 +150,7 @@ class HomePage extends React.Component {
           <br />
           {/* Backtest */}
           <Card size="small" title="Backtest" headStyle={{backgroundColor: '#f5f5f5'}}>
-            <BackTest portfolio={portfolio} />
+            <BackTest backtest={backtest} />
           </Card>
         </Col>
       </Row>

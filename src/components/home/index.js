@@ -17,6 +17,7 @@ import {
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import BackTest from '../backtest'
+import BacktestPerformance from '../backtestperformance';
 
 import './index.css';
 
@@ -80,13 +81,25 @@ const gutters = {
   4: 5
 }
 
+const placeHolderPerformance = {
+  benchmark : {
+      return:  "-",
+      vol: "-",
+      name: "-"
+    },
+    portfolio: {
+      return:  "-",
+      vol: "-"
+    }
+}
 class HomePage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       gutterKey: 2,
       portfolio: [],
-      backtest: []
+      backtest: [],
+      backtestPerformance: placeHolderPerformance
     }
   }
 
@@ -107,9 +120,11 @@ class HomePage extends React.Component {
 
     axios.get('http://127.0.0.1:8080/get-portfolio', request)
       .then(response => {
+        console.log(response.data)
         this.setState({
           portfolio: response.data.portfolio,
-          backtest: response.data.backtest
+          backtest: response.data.backtest,
+          backtestPerformance: response.data.backtestPerformance
         })
       })
       .catch(function (error) {
@@ -118,7 +133,7 @@ class HomePage extends React.Component {
   }
 
   render(){
-    const { gutterKey, portfolio, backtest } = this.state;
+    const { gutterKey, portfolio, backtest, backtestPerformance } = this.state;
 
     return(
       <Row justify="center" type="flex" gutter={16}>
@@ -152,6 +167,9 @@ class HomePage extends React.Component {
           <Card size="small" title="Backtest" headStyle={{backgroundColor: '#f5f5f5'}}>
             <BackTest backtest={backtest} />
           </Card>
+          <br />
+          {/* Backtest Performance*/}
+          <BacktestPerformance backtestPerformance={backtestPerformance} />
         </Col>
       </Row>
     )
@@ -163,7 +181,6 @@ function removeIndicesFromHTTPResponse(response){
   Object.keys(response).forEach(function(item) {
     arr.push(response[item]);
   });
-  //console.log(arr)
   return arr;
 }
 

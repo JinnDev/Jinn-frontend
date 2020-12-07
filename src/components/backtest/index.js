@@ -24,7 +24,8 @@ class BackTest extends React.Component {
           <YAxis/>
           <Tooltip itemSorter={item => -item.value} formatter={(value) => new Intl.NumberFormat('en').format(value)}/>
           <Legend />
-          <Line type="monotone" dataKey="value" stroke="#000000" strokeWidth={2} dot={false}/>
+          <Line type="monotone" dataKey="portfolio" stroke="#2A67BD" strokeWidth={2} dot={false}/>
+          <Line type="monotone" dataKey="benchmark" stroke="#666F77" strokeWidth={2} dot={false}/>
         </LineChart>
       </ResponsiveContainer>
     )

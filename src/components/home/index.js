@@ -21,64 +21,17 @@ import BacktestPerformance from '../backtestperformance';
 
 import './index.css';
 
-const columns = [
-  {
-    title: 'Ticker',
-    dataIndex: 'ticker',
-    key: 'ticker',
-    render: text => <b>{text}</b>,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    key: 'type',
-  },
-  {
-    title: 'Avg. Volatility',
-    key: 'volatility',
-    dataIndex: 'historical_vol',
-    render: text => <p>{text} %</p>,
-    // render: tags => (
-    //   <>
-    //     {tags.map(tag => {
-    //       let color = tag.length > 5 ? 'geekblue' : 'green';
-    //       if (tag === 'loser') {
-    //         color = 'volcano';
-    //       }
-    //       return (
-    //         <Tag color={color} key={tag}>
-    //           {tag.toUpperCase()}
-    //         </Tag>
-    //       );
-    //     })}
-    //   </>
-    // ),
-  },
-  {
-    title: 'Weight',
-    key: 'weight',
-    dataIndex: 'weight',
-    render: text => <b>{text} %</b>,
-    // render: (text, record) => (
-    //   <Space size="middle">
-    //     <a>Invite {record.name}</a>
-    //     <a>Delete</a>
-    //   </Space>
-    // ),
-  },
-];
-
 const gutters = {
   0: 1,
   1: 2,
   2: 3,
   3: 4,
-  4: 5
+  4: 5,
+  5: 6,
+  6: 7,
+  7: 8,
+  8: 9,
+  9: 10
 }
 
 const placeHolderPerformance = {
@@ -96,7 +49,8 @@ class HomePage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      gutterKey: 2,
+      riskLevel: 2,
+      restrictions:[],
       portfolio: [],
       backtest: [],
       backtestPerformance: placeHolderPerformance
@@ -104,23 +58,25 @@ class HomePage extends React.Component {
   }
 
   componentDidMount(){
-    this.getPortfolio(2);
+    this.getPortfolio(2, []);
   }
 
   onGutterChange = gutterKey => {
-    this.setState({gutterKey: gutterKey});
-    this.getPortfolio(gutterKey);
+    const { restrictions } = this.state;
+    this.setState({riskLevel: gutterKey});
+    this.getPortfolio(gutterKey, restrictions);
   }
 
-  getPortfolio = (riskLevel) => {
-
+  getPortfolio = (riskLevel, restrictions) => {
+    console.log(riskLevel)
+    console.log(restrictions)
     const request = {
-      params: {riskLevel: riskLevel}
+      riskLevel: riskLevel,
+      restrictions : restrictions
     };
 
-    axios.get('http://127.0.0.1:8080/get-portfolio', request)
+    axios.post('http://127.0.0.1:8080/post-get-portfolio', request)
       .then(response => {
-        console.log(response.data)
         this.setState({
           portfolio: response.data.portfolio,
           backtest: response.data.backtest,
@@ -132,8 +88,75 @@ class HomePage extends React.Component {
       })
   }
 
+  addRestriction = (ticker, weight) => {
+    const { restrictions, riskLevel } = this.state;
+    restrictions.push({ticker: ticker, weight: weight});
+    this.setState({restrictions: restrictions})
+    this.getPortfolio(riskLevel, restrictions)
+  }
+
   render(){
-    const { gutterKey, portfolio, backtest, backtestPerformance } = this.state;
+    const columns = [
+      {
+        title: 'Ticker',
+        dataIndex: 'ticker',
+        key: 'ticker',
+        render: text => <b>{text}</b>,
+      },
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: 'Type',
+        dataIndex: 'type',
+        key: 'type',
+      },
+      {
+        title: 'Avg. Volatility',
+        key: 'volatility',
+        dataIndex: 'historical_vol',
+        render: text => <p>{text} %</p>,
+        // render: tags => (
+        //   <>
+        //     {tags.map(tag => {
+        //       let color = tag.length > 5 ? 'geekblue' : 'green';
+        //       if (tag === 'loser') {
+        //         color = 'volcano';
+        //       }
+        //       return (
+        //         <Tag color={color} key={tag}>
+        //           {tag.toUpperCase()}
+        //         </Tag>
+        //       );
+        //     })}
+        //   </>
+        // ),
+      },
+      {
+        title: 'Weight',
+        key: 'weight',
+        dataIndex: 'weight',
+        render: text => <b>{text} %</b>,
+        // render: (text, record) => (
+        //   <Space size="middle">
+        //     <a>Invite {record.name}</a>
+        //     <a>Delete</a>
+        //   </Space>
+        // ),
+      },
+      {
+        title: '',
+        key: 'action',
+        dataIndex: 'weight',
+        render: (text, record) => (
+          <Button type="danger" size="small" onClick={() => this.addRestriction(record.ticker, 0)}>Remove</Button>
+        ),
+      },
+    ];
+
+    const { riskLevel, portfolio, backtest, backtestPerformance } = this.state;
 
     return(
       <Row justify="center" type="flex" gutter={16}>
@@ -152,8 +175,8 @@ class HomePage extends React.Component {
               <MinusOutlined />
               <Slider
                 min={0}
-                max={4}
-                value={gutterKey}
+                max={9}
+                value={riskLevel}
                 onChange={this.onGutterChange}
                 marks={gutters}
                 step={null}

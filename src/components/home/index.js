@@ -18,6 +18,7 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import BackTest from '../backtest'
 import BacktestPerformance from '../backtestperformance';
+import WeightModal from '../modal';
 
 import './index.css';
 
@@ -68,7 +69,6 @@ class HomePage extends React.Component {
   }
 
   getPortfolio = (riskLevel, restrictions) => {
-    console.log(riskLevel)
     console.log(restrictions)
     const request = {
       riskLevel: riskLevel,
@@ -148,10 +148,18 @@ class HomePage extends React.Component {
       },
       {
         title: '',
-        key: 'action',
-        dataIndex: 'weight',
+        key: 'delete',
+        dataIndex: 'delete',
         render: (text, record) => (
           <Button type="danger" size="small" onClick={() => this.addRestriction(record.ticker, 0)}>Remove</Button>
+        ),
+      },
+      {
+        title: '',
+        key: 'modify',
+        dataIndex: 'modify',
+        render: (text, record) => (
+          <WeightModal ticker={record.ticker} onSubmit={this.addRestriction} /> // Needs to be modified
         ),
       },
     ];
